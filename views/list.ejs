@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Listing</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('navbar')  %>
+    <h1>Task List</h1>
+    <main class="container">
+        <a class="button" href="/add">Add task</a>
+        <% if (tasks.length === 0) { %>
+            <p>No tasks yet.</p>
+        <% } else { %>
+            <ul class="task-list">
+                <% tasks.forEach((task) => { %>
+                    <li class="task">
+                        <div>
+                            <h2><%= task.title %></h2>
+                            <% if (task.description) { %>
+                                <p><%= task.description %></p>
+                            <% } %>
+                        </div>
+                        <div class="task-actions">
+                            <a href="/tasks/<%= task._id %>/edit">Edit</a>
+                            <form class="delete-form" action="/tasks/<%= task._id %>/delete" method="post">
+                                <button class="danger" type="button" data-task-title="<%= task.title %>">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </main>
+    <dialog id="delete-dialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-message">
+        <h2 id="delete-dialog-title">Delete task?</h2>
+        <p id="delete-dialog-message">Are you sure you want to delete this task?</p>
+        <div class="dialog-actions">
+            <form method="dialog">
+                <button type="submit">Cancel</button>
+            </form>
+            <button class="danger" id="confirm-delete" type="button">Delete</button>
+        </div>
+    </dialog>
+    <script src="/delete-confirmation.js" defer></script>
+</body>
+</html>
